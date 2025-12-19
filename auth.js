@@ -1,5 +1,5 @@
 (function () {
-  const PASSWORD = "kein-system-ist-sicher";
+  const PASSWORD = "nowyouseeme";
 
   // Always ask password on load / refresh
   const attempt = prompt("Enter access password:");
@@ -27,3 +27,4 @@
     `;
   }
 })();
+
