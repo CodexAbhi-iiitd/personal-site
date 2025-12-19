@@ -1,14 +1,13 @@
 (function () {
-  const PASSWORD = "NowYouSeeMe";
+  const PASSWORD = "kein-system-ist-sicher";
 
-  if (localStorage.getItem("authenticated") === "true") return;
-
+  // Always ask password on load / refresh
   const attempt = prompt("Enter access password:");
 
   if (attempt === PASSWORD) {
-    localStorage.setItem("authenticated", "true");
+    // Allow page to continue (no storage)
+    // Start BGM flag for this session only
     localStorage.setItem("bgmPlaying", "true");
-    location.reload();
   } else {
     document.body.innerHTML = `
       <div style="
