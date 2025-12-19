@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abhishek — Personal Space</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; cursor: default; }
+    .font-mono { font-family: 'Fira Code', monospace; }
+
+    /* ========================================= */
+    /* NEW: CUSTOM TEXT SELECTION (Green/Black)  */
+    /* ========================================= */
+    ::selection {
+      background: #4ade80; /* Green-400 */
+      color: #000000;
+    }
+    ::-moz-selection {
+      background: #4ade80;
+      color: #000000;
+    }
+
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.8s ease;
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Terminal Cursor */
+    .cursor::after {
+      content: "_";
+      animation: blink 1s infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #000;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #333;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4ade80;
+    }
+
+    /* KALI LOGO BACKGROUND */
+    .kali-background {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: -1;
+      filter: drop-shadow(0 0 30px rgba(74, 222, 128, 0.4));
+    }
+    @media (max-width: 768px) {
+      .kali-background {
+        width: 300px;
+      }
+    }
+
+    /* SOFT RADIATION GLOW */
+    #cursor-glow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 700px;
+      height: 700px;
+      background: radial-gradient(circle, rgba(34, 255, 100, 0.12) 0%, rgba(34, 255, 100, 0.02) 45%, transparent 65%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0; 
+      will-change: left, top; 
+    }
+
+    /* ========================================= */
+    /* NEW: CRT SCANLINE OVERLAY                 */
+    /* ========================================= */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 50; /* Top layer */
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0,0,0,0.1) 50%,
+        rgba(0,0,0,0.1)
+      );
+      background-size: 100% 4px; /* Size of the scanlines */
+    }
+  </style>
+</head>
+
+<body class="bg-gradient-to-br from-black via-zinc-900 to-black text-zinc-200 overflow-x-hidden">
+
+<img src="kali.png" alt="Kali Linux Logo" class="kali-background">
+
+<div id="cursor-glow"></div>
+
+<div class="scanlines"></div>
+
+<div id="login-overlay" class="fixed inset-0 z-[9999] bg-black flex items-center justify-center font-mono text-sm">
+  <div class="w-full max-w-md p-8 relative z-50"> <div class="text-green-500 mb-2">
+      <span>root@abhishek:~$</span> <span class="text-zinc-400">./init_system.sh</span>
+    </div>
+    
+    <div class="text-zinc-500 mb-6">
+      Initializing secure environment...<br>
+      Loading assets... Done.<br>
+      Establishing connection... Done.
+    </div>
+
+    <div class="flex items-center group">
+      <span class="text-green-500 mr-3">password:</span>
+      <input type="password" id="password-input" 
+             class="bg-transparent border-none outline-none text-zinc-200 w-full focus:ring-0 placeholder-zinc-800"
+             placeholder="Enter password..." autofocus autocomplete="off">
+    </div>
+
+    <div id="login-message" class="mt-4 h-6 text-red-500 text-xs"></div>
+    
+    <div class="mt-12 text-zinc-700 text-xs text-center">
+      Running: Kali Linux / Kernel 6.1.0<br>
+      Press [ENTER] to authenticate
+    </div>
+  </div>
+</div>
+
+<section class="min-h-screen flex items-center justify-center px-6 relative z-10">
+  <div class="bg-black/80 backdrop-blur-sm border border-zinc-800 rounded-xl p-6 w-full max-w-xl text-sm text-green-400 font-mono shadow-2xl shadow-green-900/10">
+    <p>$ whoami</p>
+    <p id="terminal-text" class="mt-2 cursor"></p>
+    <p id="access-granted-msg" class="mt-6 text-zinc-500 text-xs text-center opacity-0 transition-opacity duration-1000">
+      Access granted…
+    </p>
+  </div>
+</section>
+
+<nav class="sticky top-0 z-50 bg-black/80 backdrop-blur-md border-b border-zinc-800 px-8 py-4">
+  <div class="flex justify-between items-center">
+    <span class="font-semibold tracking-wide">Abhishek</span>
+
+    <div class="flex items-center space-x-6 text-sm text-zinc-400">
+      <a href="#about" class="hover:text-green-400 transition-colors">About</a>
+      <a href="#education" class="hover:text-green-400 transition-colors">Education</a>
+      <a href="#skills" class="hover:text-green-400 transition-colors">Skills</a>
+      <a href="#charisma" class="hover:text-green-400 transition-colors">Charisma</a>
+      <a href="#hobbies" class="hover:text-green-400 transition-colors">Hobbies</a>
+
+      <div class="flex items-center space-x-3 pl-4 border-l border-zinc-800">
+        <button onclick="volumeDown()" class="hover:text-white transition">🔉</button>
+        <button onclick="toggleMute()" class="hover:text-white transition">🔇</button>
+        <button onclick="volumeUp()" class="hover:text-white transition">🔊</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<section id="hero-section" class="text-center py-32 px-6 reveal relative z-10">
+  <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-600">
+    Curious Mind.<br>Calm Chaos.
+  </h1>
+  <p class="max-w-xl mx-auto text-zinc-400 text-lg">
+    Undergraduate at IIIT Delhi, exploring computer science, systems, and strategy.
+  </p>
+</section>
+
+<section id="about" class="px-8 py-24 max-w-5xl mx-auto reveal relative z-10">
+  <h2 class="text-2xl font-semibold mb-6 border-l-2 border-green-500 pl-4">About Me</h2>
+  <p class="text-zinc-400 leading-loose text-lg">
+    I’m Abhishek — an undergraduate with academic grounding through
+    JEE Mains and JEE Advanced. I enjoy systems that reward patience,
+    structure, and long-term thinking.
+  </p>
+</section>
+
+<section id="education" class="px-8 py-24 max-w-5xl mx-auto reveal relative z-10">
+  <h2 class="text-2xl font-semibold mb-6 border-l-2 border-green-500 pl-4">Education</h2>
+  <div class="text-zinc-400 leading-relaxed">
+    <p class="text-xl text-zinc-200 font-medium">Indraprastha Institute of Information Technology, Delhi</p>
+    <p class="mt-1">B.Tech in Computer Science & Computational Biology</p>
+    <p class="mt-4 text-sm text-zinc-500 bg-zinc-900/50 inline-block px-3 py-1 rounded-full border border-zinc-800">
+      Qualified JEE Mains & JEE Advanced
+    </p>
+  </div>
+</section>
+
+<section id="skills" class="px-8 py-24 bg-zinc-900/20 reveal border-y border-zinc-900 relative z-10">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-10 border-l-2 border-green-500 pl-4">Abilities & Skills</h2>
+    <div class="grid md:grid-cols-2 gap-6 text-sm font-mono text-zinc-300">
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">
+        C / C++ / Python
+      </div>
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">
+        Linux & System Internals
+      </div>
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">
+        Cybersecurity Foundations
+      </div>
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">
+        Chess — Lichess 2244
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="charisma" class="px-8 py-24 max-w-6xl mx-auto reveal relative z-10">
+  <h2 class="text-2xl font-semibold mb-10 border-l-2 border-green-500 pl-4">Charisma</h2>
+
+  <div class="relative flex flex-col md:flex-row items-center gap-12 group">
+    <div class="relative">
+      <div class="absolute -inset-1 bg-gradient-to-r from-green-600 to-emerald-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+      
+      <img src="charisma.png" class="relative w-80 h-80 object-cover rounded-2xl shadow-2xl grayscale group-hover:grayscale-0 transition duration-700">
+
+      <div class="absolute -bottom-12 -left-12 bg-black/90 backdrop-blur-xl border border-zinc-700 rounded-xl p-5 w-64 shadow-2xl">
+        <div class="grid grid-cols-2 gap-y-3 gap-x-4 text-[10px] uppercase tracking-wider text-zinc-400 font-mono">
+          <div>Overall 91<div class="h-0.5 bg-zinc-800 mt-1"><div class="h-0.5 bg-green-500 w-[91%] shadow-[0_0_5px_#22c55e]"></div></div></div>
+          <div>Potential 95<div class="h-0.5 bg-zinc-800 mt-1"><div class="h-0.5 bg-green-500 w-[95%] shadow-[0_0_5px_#22c55e]"></div></div></div>
+          <div>Masculinity 88<div class="h-0.5 bg-zinc-800 mt-1"><div class="h-0.5 bg-green-500 w-[88%] shadow-[0_0_5px_#22c55e]"></div></div></div>
+          <div>Jawline 91<div class="h-0.5 bg-zinc-800 mt-1"><div class="h-0.5 bg-green-500 w-[91%] shadow-[0_0_5px_#22c55e]"></div></div></div>
+          <div>Skin 85<div class="h-0.5 bg-zinc-800 mt-1"><div class="h-0.5 bg-green-500 w-[85%] shadow-[0_0_5px_#22c55e]"></div></div></div>
+          <div>Cheekbones 81<div class="h-0.5 bg-zinc-800 mt-1"><div class="h-0.5 bg-green-500 w-[81%] shadow-[0_0_5px_#22c55e]"></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <p class="max-w-md text-zinc-400 text-lg italic border-l border-zinc-800 pl-6">
+      "Presence is composure, confidence, and awareness."
+    </p>
+  </div>
+</section>
+
+<section id="hobbies" class="px-8 py-24 bg-zinc-900/20 reveal border-t border-zinc-900 relative z-10">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-2xl font-semibold mb-10 border-l-2 border-green-500 pl-4">Hobbies</h2>
+    <div class="grid md:grid-cols-3 gap-6 text-sm font-mono text-zinc-300">
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">♟️ Chess</div>
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">⚽ Football</div>
+      <div class="border border-zinc-800 bg-black/90 p-6 rounded-xl hover:translate-y-[-4px] transition-transform">🎮 Horror Games</div>
+    </div>
+  </div>
+</section>
+
+<footer class="text-center py-12 text-zinc-600 text-xs font-mono border-t border-zinc-900 relative z-10">
+  KEIN SYSTEM IST SICHER
+</footer>
+
+<script src="terminal.js"></script>
+<script src="auth.js"></script>
+
+<script>
+  let bgm;
+  function initBGM() {
+    bgm = new Audio("bgm.mp3");
+    bgm.loop = true;
+    bgm.volume = parseFloat(localStorage.getItem("bgmVolume")) || 0.25;
+    bgm.play().catch(e => console.log("Audio waiting for interaction"));
+  }
+
+  function volumeUp() {
+    if (!bgm) return;
+    bgm.volume = Math.min(1, bgm.volume + 0.1);
+    localStorage.setItem("bgmVolume", bgm.volume);
+  }
+
+  function volumeDown() {
+    if (!bgm) return;
+    bgm.volume = Math.max(0, bgm.volume - 0.1);
+    localStorage.setItem("bgmVolume", bgm.volume);
+  }
+
+  function toggleMute() {
+    if (!bgm) return;
+    bgm.muted = !bgm.muted;
+  }
+
+  // UPDATED CURSOR GLOW SCRIPT
+  const cursorGlow = document.getElementById("cursor-glow");
+  document.addEventListener("mousemove", (e) => {
+    // Sets the position of the fixed div to the cursor coordinates
+    // CSS transform takes care of centering it
+    cursorGlow.style.left = e.clientX + "px";
+    cursorGlow.style.top = e.clientY + "px";
+  });
+</script>
+
+</body>
+</html>
