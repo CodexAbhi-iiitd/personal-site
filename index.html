@@ -27,7 +27,7 @@ body { font-family: 'Inter', sans-serif; }
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* Cursor Glow */
+/* Cursor glow */
 .cursor-glow {
   position: fixed;
   width: 200px;
@@ -58,6 +58,11 @@ body { font-family: 'Inter', sans-serif; }
 
 <body class="bg-gradient-to-br from-black via-zinc-900 to-black text-zinc-200">
 
+<!-- FORCE START AT TOP -->
+<script>
+  window.scrollTo(0, 0);
+</script>
+
 <div class="kali-bg"></div>
 <div id="cursorGlow" class="cursor-glow"></div>
 
@@ -72,7 +77,7 @@ body { font-family: 'Inter', sans-serif; }
   </div>
 </div>
 
-<!-- TERMINAL INTRO -->
+<!-- TERMINAL -->
 <section class="min-h-screen flex items-center justify-center px-6">
   <div class="bg-black border border-zinc-800 rounded-xl p-6 w-full max-w-xl text-sm text-green-400 font-mono shadow-xl">
     <p>$ whoami</p>
@@ -80,86 +85,25 @@ body { font-family: 'Inter', sans-serif; }
   </div>
 </section>
 
-<!-- NAVBAR -->
-<nav class="sticky top-0 bg-black/60 backdrop-blur border-b border-zinc-800 px-8 py-4 z-50">
-  <div class="flex justify-between items-center">
-    <span class="font-semibold">Abhishek</span>
-    <div class="flex items-center space-x-4 text-sm text-zinc-400">
-      <a href="#about">About</a>
-      <a href="#education">Education</a>
-      <a href="#skills">Skills</a>
-      <a href="#charisma">Charisma</a>
-      <a href="#hobbies">Hobbies</a>
-      <button onclick="volumeDown()">🔉</button>
-      <button onclick="toggleMute()">🔇</button>
-      <button onclick="volumeUp()">🔊</button>
-    </div>
-  </div>
-</nav>
-
-<!-- CONTENT -->
-<section id="about" class="px-8 py-20 max-w-5xl mx-auto reveal">
-<h2 class="text-2xl font-semibold mb-6">About</h2>
-<p class="text-zinc-400">
-Undergraduate at IIIT Delhi. Qualified JEE Mains & JEE Advanced.
-Focused on systems, chess, and long-term thinking.
-</p>
-</section>
-
-<section id="education" class="px-8 py-20 max-w-5xl mx-auto reveal">
-<h2 class="text-2xl font-semibold mb-6">Education</h2>
-<p class="text-zinc-400">
-IIIT Delhi — Undergraduate<br>
-Department of Computer Science & Computational Biology
-</p>
-</section>
-
-<section id="skills" class="px-8 py-20 bg-zinc-900/40 reveal">
-<div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-<div class="border border-zinc-800 p-6 rounded-xl">C / C++ / Python / HTML / Tailwind CSS</div>
-<div class="border border-zinc-800 p-6 rounded-xl">Linux & Systems</div>
-<div class="border border-zinc-800 p-6 rounded-xl">Cybersecurity Foundations</div>
-<div class="border border-zinc-800 p-6 rounded-xl">Chess — Lichess 2244</div>
-</div>
-</section>
-
-<section id="charisma" class="px-8 py-20 max-w-6xl mx-auto reveal">
-<img src="charisma.png" class="w-80 h-80 rounded-2xl object-cover mx-auto">
-</section>
-
-<section id="hobbies" class="px-8 py-20 bg-zinc-900/40 reveal">
-<div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-<div class="border border-zinc-800 p-5 rounded-xl">♟️ Chess</div>
-<div class="border border-zinc-800 p-5 rounded-xl">⚽ Football</div>
-<div class="border border-zinc-800 p-5 rounded-xl">🎮 Horror Games</div>
-</div>
-</section>
-
-<footer class="text-center py-10 text-zinc-500 text-sm border-t border-zinc-800">
-Kein System Ist Sicher.
-</footer>
-
 <script src="auth.js"></script>
 <script src="terminal.js"></script>
 
 <script>
+/* Cursor glow movement */
 const glow = document.getElementById("cursorGlow");
 document.addEventListener("mousemove", e => {
   glow.style.left = e.clientX + "px";
   glow.style.top = e.clientY + "px";
 });
 
-/* BGM controls */
+/* BGM */
 let bgm;
 function initBGM() {
   bgm = new Audio("bgm.mp3");
   bgm.loop = true;
   bgm.volume = 0.25;
-  bgm.play().catch(()=>{});
+  bgm.play().catch(() => {});
 }
-function volumeUp(){ if(!bgm) initBGM(); bgm.volume=Math.min(1,bgm.volume+0.1); }
-function volumeDown(){ if(!bgm) initBGM(); bgm.volume=Math.max(0,bgm.volume-0.1); }
-function toggleMute(){ if(!bgm) initBGM(); bgm.volume=bgm.volume>0?0:0.25; }
 </script>
 
 </body>
