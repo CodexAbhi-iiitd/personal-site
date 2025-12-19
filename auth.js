@@ -1,30 +1,17 @@
-(function () {
-  const PASSWORD = "nowyouseeme";
+const PASSWORD = "kein-system-ist-sicher";
 
-  // Always ask password on load / refresh
-  const attempt = prompt("Enter access password:");
+const overlay = document.getElementById("loginOverlay");
+const input = document.getElementById("passwordInput");
+const error = document.getElementById("errorText");
 
-  if (attempt === PASSWORD) {
-    // Allow page to continue (no storage)
-    // Start BGM flag for this session only
-    localStorage.setItem("bgmPlaying", "true");
-  } else {
-    document.body.innerHTML = `
-      <div style="
-        height:100vh;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        background:black;
-        color:#888;
-        font-family:monospace;
-        text-align:center;">
-        <div>
-          <p>Access Denied</p>
-          <p style="font-size:12px;margin-top:8px;">Unauthorized user</p>
-        </div>
-      </div>
-    `;
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter") {
+    if (input.value === PASSWORD) {
+      overlay.style.display = "none";
+      initBGM();
+    } else {
+      error.classList.remove("hidden");
+      input.value = "";
+    }
   }
-})();
-
+});
