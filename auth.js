@@ -1,6 +1,6 @@
 // auth.js
 
-const PASSWORD = "kein-system-ist-sicher";
+const PASSWORD = "nowyouseeme";
 
 const overlay = document.getElementById("loginOverlay");
 const input = document.getElementById("passwordInput");
