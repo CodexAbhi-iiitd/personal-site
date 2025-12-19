@@ -1,3 +1,5 @@
+// terminal.js
+
 const lines = [
   "Name: Abhishek",
   "Institute: IIIT Delhi",
@@ -7,30 +9,42 @@ const lines = [
   "Status: Building quietly"
 ];
 
-let i=0,j=0;
-const el=document.getElementById("terminal-text");
+let i = 0;
+let j = 0;
 
-function typeLine(){
-  if(i<lines.length){
-    if(j<lines[i].length){
-      el.innerHTML+=lines[i][j++];
-      const s=new Audio("type.mp3");
-      s.volume=0.15;
-      s.play().catch(()=>{});
-    }else{
-      el.innerHTML+="<br>";
-      i++; j=0;
+const el = document.getElementById("terminal-text");
+
+// SINGLE typing sound instance
+const typeSound = new Audio("type.mp3");
+typeSound.volume = 0.12;
+typeSound.preload = "auto";
+
+function typeLine() {
+  if (i < lines.length) {
+    if (j < lines[i].length) {
+      el.innerHTML += lines[i][j++];
+      typeSound.currentTime = 0;
+      typeSound.play().catch(() => {});
+    } else {
+      el.innerHTML += "<br>";
+      i++;
+      j = 0;
     }
-    setTimeout(typeLine,45);
-  }else{
-    setTimeout(()=>window.scrollTo({top:window.innerHeight,behavior:"smooth"}),1200);
+    setTimeout(typeLine, 45);
+  } else {
+    setTimeout(() => {
+      window.scrollTo({
+        top: window.innerHeight,
+        behavior: "smooth"
+      });
+    }, 1200);
   }
 }
-typeLine();
 
-window.addEventListener("scroll",()=>{
-  document.querySelectorAll(".reveal").forEach(r=>{
-    if(r.getBoundingClientRect().top<window.innerHeight-100)
-      r.classList.add("active");
-  });
-});
+// Expose terminal start function
+window.startTerminal = function () {
+  el.innerHTML = "";
+  i = 0;
+  j = 0;
+  typeLine();
+};
